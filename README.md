@@ -1,1 +1,1 @@
-# JS-Proffessional-03-2023
+OTUS JavaScript Proffessional course repo
