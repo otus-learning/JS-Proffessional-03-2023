@@ -27,7 +27,6 @@ prodsList.forEach((list) => {
 		list.forEach((el) => {
 			uniProds[el] ??= { childs : {}, name : el, popularity : 0 };
 			prod.childs[el] ??= uniProds[el];
-			prod.childs[name] ??= uniProds[name];
 			prod = uniProds[el];
 		});
 	}
