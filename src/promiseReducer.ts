@@ -1,5 +1,5 @@
-type PromiseFunc = () => Promise;
-type OurReduceFunc = (number, number) => number;
+export type PromiseFunc = () => Promise<number>;
+export type OurReduceFunc = (memo : number, value : number) => number;
 
 const fn1 : PromiseFunc = () => {
 	console.log('fn1')
@@ -11,12 +11,12 @@ const fn2 : PromiseFunc = () => new Promise((resolve) => {
 	setTimeout(() => resolve(2), 1000)
 });
 
-const reduce : OurResuceFunc = (memo : number, value : number) : number => {
+const reduce : OurReduceFunc = (memo : number, value : number) : number => {
 	console.log('reduce');
 	return memo * value;  
 }
 
-const asyncFunctions : Array<PromiseFunc> = [fn1, fn2];
+const asyncFunctions = [fn1, fn2];
 
 /*
 function promiseReduce(asyncFunctions, reduce, initialValue) {
@@ -28,13 +28,14 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
 		});
 	}) : Promise.resolve(initialValue);
 };
-
-promiseReduce([fn1, fn2], reduce, 1).then(console.log);
 */
 
-(asyncFunctions.reduce((prev, curr) => 
-	prev.then(memo => {
-		return new Promise(resolve => curr().then(data => resolve(reduce(memo, data))))
-	//Promise.resolve(1) do make initial value for our reduce function (not Array.reduce)
-	}), Promise.resolve(1)
-)).then(console.log);
+export function promiseReduce(asyncFunctions : Array<PromiseFunc>, reduce : OurReduceFunc, initialValue : number) : Promise<number> {
+	return (asyncFunctions.length) ? asyncFunctions.reduce((prev, curr) => 
+		prev.then(memo => {
+			return new Promise(resolve => curr().then(data => resolve(reduce(memo, data))))
+		}), Promise.resolve(initialValue)) : Promise.resolve(initialValue);
+};
+
+
+promiseReduce([fn1, fn2], reduce, 1).then(console.log);
