@@ -1,16 +1,27 @@
-name: Coverage
+name: Code Coverage
 
-on: pull_request
+on: [push, pull_request]
 
 jobs:
-  coverage:
+  build:
+
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+
     steps:
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14
-      - uses: actions/checkout@v2
-      - uses: artiomtr/jest-coverage-report-action@v2.0-rc.6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          threshold: 60
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run the tests
+      run: npm test -- --coverage
