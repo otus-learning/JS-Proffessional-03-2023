@@ -41,7 +41,7 @@ export function promiseReduce(asyncFunctions : Array<PromiseFunc>, reduce : OurR
 
 
 export function promiseReduce(asyncFunctions : Array<PromiseFunc>, reduce : OurReduceFunc, initialValue : number) : Promise<number> {
-	return (asyncFunctions.length) ? asyncFunctions.reduce(async (prev : Promise<number>, curr : Promise<number>) => {
+	return (asyncFunctions.length) ? asyncFunctions.reduce(async (prev : Promise<number>, curr : PromiseFunc) => {
 		const memo = await prev;
 		const data = await curr();
 		return Promise.resolve(reduce(memo, data));
