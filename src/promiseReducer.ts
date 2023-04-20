@@ -30,12 +30,22 @@ function promiseReduce(asyncFunctions, reduce, initialValue) {
 };
 */
 
+/*
 export function promiseReduce(asyncFunctions : Array<PromiseFunc>, reduce : OurReduceFunc, initialValue : number) : Promise<number> {
 	return (asyncFunctions.length) ? asyncFunctions.reduce((prev, curr) => 
 		prev.then(memo => {
 			return new Promise(resolve => curr().then(data => resolve(reduce(memo, data))))
 		}), Promise.resolve(initialValue)) : Promise.resolve(initialValue);
 };
+*/
 
+
+export function promiseReduce(asyncFunctions : Array<PromiseFunc>, reduce : OurReduceFunc, initialValue : number) : Promise<number> {
+	return (asyncFunctions.length) ? asyncFunctions.reduce(async (prev : Promise<number>, curr : Promise<number>) => {
+		const memo = await prev;
+		const data = await curr();
+		return Promise.resolve(reduce(memo, data));
+		}, Promise.resolve(initialValue)) : Promise.resolve(initialValue);
+};
 
 promiseReduce([fn1, fn2], reduce, 1).then(console.log);
