@@ -18,34 +18,13 @@ const reduce : OurReduceFunc = (memo : number, value : number) : number => {
 
 const asyncFunctions = [fn1, fn2];
 
-/*
-function promiseReduce(asyncFunctions, reduce, initialValue) {
-	let idx = 1;
-	return (asyncFunctions.length) ? new Promise((resolve) => {
-		asyncFunctions[0]().then(function thenFn(data) {
-			initialValue = reduce(initialValue, data);
-			(idx === asyncFunctions.length) ? resolve(initialValue) : asyncFunctions[idx ++]().then(thenFn);
-		});
-	}) : Promise.resolve(initialValue);
-};
-*/
+export async function promiseReduce(asyncFunctions : Array<PromiseFunc>, reduce : OurReduceFunc, memo : number) : Promise<number> {
+	for (let f of asyncFunctions) {
+		let data = await f();
+		memo = reduce(memo, data);
+	}
 
-/*
-export function promiseReduce(asyncFunctions : Array<PromiseFunc>, reduce : OurReduceFunc, initialValue : number) : Promise<number> {
-	return (asyncFunctions.length) ? asyncFunctions.reduce((prev, curr) => 
-		prev.then(memo => {
-			return new Promise(resolve => curr().then(data => resolve(reduce(memo, data))))
-		}), Promise.resolve(initialValue)) : Promise.resolve(initialValue);
-};
-*/
-
-
-export function promiseReduce(asyncFunctions : Array<PromiseFunc>, reduce : OurReduceFunc, initialValue : number) : Promise<number> {
-	return (asyncFunctions.length) ? asyncFunctions.reduce(async (prev : Promise<number>, curr : PromiseFunc) => {
-		const memo = await prev;
-		const data = await curr();
-		return Promise.resolve(reduce(memo, data));
-		}, Promise.resolve(initialValue)) : Promise.resolve(initialValue);
+	return Promise.resolve(memo);
 };
 
 promiseReduce([fn1, fn2], reduce, 1).then(console.log);
