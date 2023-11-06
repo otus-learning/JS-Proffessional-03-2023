@@ -20,8 +20,9 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-explicit-any": 0,
     "no-import-assign": 0,
-    indent: ["error", 2],
+    //    indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],

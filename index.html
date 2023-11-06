@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lit-HTML tree/leaf component example</title>
+    <link rel="stylesheet" href="./src/index.css" />
+    <script type="module" src="/src/my-leaf.ts"></script>
+    <script type="module" src="/src/my-branch.ts"></script>
+    <script type="module" src="/src/my-tree.ts"></script>
+    <script type="module" src="/src/my-settings.ts"></script>
+    <script type="module" src="/src/my-app.ts"></script>
+  </head>
+  <body>
+    <my-app>
+      <my-settings></my-settings>
+      <div style="display: flex">
+        <my-tree
+          str='{"id": "1", "items": [{"id": "2", "items": [{ "id": "3" }, { "id": "4" }, { "id": "5", "items": [{"id" : "10"}, {"id" : "12"}, {"id" : "14", "items" : [{"id" : "15"}]}]}, {"id": "13"}]}, {"id": "6", "items": [{ "id": "7" }, { "id": "8" }, { "id": "9" }]}, { "id": "11" }] }'
+        >
+        </my-tree>
+
+        <my-tree
+          str='{"id": "A", "items": [{"id": "B", "items": [{ "id": "C" }, { "id": "D" }, { "id": "O" }, { "id": "P" }, { "id": "Q" }]}, { "id": "R" }, { "id": "F" }, { "id": "E" } ]}'
+        >
+        </my-tree>
+
+        <my-tree
+          str='{"id": "A1", "items": [{"id": "B2", "items": [{ "id": "C3" }, { "id": "D4" }]}, {"id": "E5"}, {"id": "F6"}, {"id": "J13"}, {"id": "K6", "items": [{ "id": "L7" }, { "id": "M8" }, { "id": "N9" }]}, { "id": "O11" }] }'
+        >
+        </my-tree>
+      </div>
+    </my-app>
+  </body>
+</html>
